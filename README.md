@@ -13,21 +13,21 @@ curl http://127.0.0.1:11435/v1/chat/completions -H 'Content-Type: application/js
 ## Compose + opencode (gemma4:e2b)
 
 ```
-ollama/compose.yml      # Ollama 서버 (CPU 기본, 128K 컨텍스트, flash attention, KV cache q4_0)
-ollama/compose.gpu.yml  # NVIDIA GPU 오버라이드 (GPU 환경에서만 사용)
-opencode/opencode.jsonc # opencode 설정 → ~/.config/opencode/opencode.jsonc 로 복사
+ollama/compose.yml      # Ollama server (CPU by default, 128K context, flash attention, KV cache q4_0)
+ollama/compose.gpu.yml  # NVIDIA GPU override (use only on hosts with an NVIDIA GPU)
+opencode/opencode.jsonc # opencode config; copy to ~/.config/opencode/opencode.jsonc
 ```
 
 ```bash
-# NVIDIA 없는 환경
+# Without an NVIDIA GPU
 docker compose -f ollama/compose.yml up -d
 
-# NVIDIA GPU 환경
+# With an NVIDIA GPU
 docker compose -f ollama/compose.yml -f ollama/compose.gpu.yml up -d
 
-# opencode 설정 적용
+# Apply the opencode config
 cp opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc
 ```
 
-- `OLLAMA_CONTEXT_LENGTH`(compose.yml)와 `limit.context`(opencode.jsonc)는 같은 값으로 맞출 것. Ollama 기본값은 4096이라 opencode 요청(약 8k 토큰)이 넘친다.
-- 모델을 바꾸려면 compose.yml의 `ollama pull` 대상과 opencode.jsonc의 모델명을 함께 수정한다.
+- Keep `OLLAMA_CONTEXT_LENGTH` (compose.yml) and `limit.context` (opencode.jsonc) at the same value. Ollama defaults to 4096, which an opencode request (about 8k tokens) overflows.
+- To switch models, change both the `ollama pull` target in compose.yml and the model name in opencode.jsonc.

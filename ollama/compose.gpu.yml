@@ -1,4 +1,4 @@
-# NVIDIA GPU 환경에서만 함께 사용:
+# Use only on hosts with an NVIDIA GPU, layered on top of compose.yml:
 #   docker compose -f compose.yml -f compose.gpu.yml up -d
 services:
   ollama:
