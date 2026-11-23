@@ -28,21 +28,38 @@ curl http://127.0.0.1:11434/api/tags
 
 ## 대화하기
 
-서버 컨테이너는 `up -d`로 이미 떠 있어야 한다. 가장 간단한 한 줄은 래퍼다.
+서버 컨테이너는 `up -d`로 이미 떠 있어야 한다.
 
-```bat
-ollama.bat run gemma4:e4b        :: CMD
-.\ollama.bat run gemma4:e4b      :: PowerShell
-```
+`docker compose`는 현재 디렉터리의 `compose.yml`을 읽는다. 반드시 이 저장소 루트(`C:\workspace\ollama-local`)에서 실행한다. 다른 저장소(예: `burp-monolith`)에서 실행하면 그 쪽 compose에 `ollama` 서비스가 없어 `service "ollama" is not running`이 뜬다.
 
-Compose 명령을 쓰려면:
+저장소 루트에서:
 
 ```bash
 docker compose exec ollama ollama run gemma4:e4b             # 대화형
 docker compose exec ollama ollama run gemma4:e4b "한 줄만 답해"  # 원샷
 ```
 
-`docker compose run`은 서버가 없는 일회용 컨테이너라 모델에 접속하지 못한다. `exec`가 없는 Compose라면 `docker exec -it ollama ollama run gemma4:e4b`를 쓴다.
+어디서든 실행하려면 컨테이너 이름을 직접 지정한다:
+
+```bash
+docker exec -it ollama ollama run gemma4:e4b
+docker exec ollama ollama run gemma4:e4b "한 줄만 답해"
+```
+
+Git Bash/UCRT64에서 compose 파일 경로를 지정할 때:
+
+```bash
+docker compose -f C:/workspace/ollama-local/compose.yml exec -T ollama ollama run gemma4:e4b "한 줄만 답해"
+```
+
+Windows CMD/PowerShell에서는 래퍼를 쓴다.
+
+```bat
+ollama.bat run gemma4:e4b        :: CMD
+.\ollama.bat run gemma4:e4b      :: PowerShell
+```
+
+`docker compose run`은 서버가 없는 일회용 컨테이너라 모델에 접속하지 못한다. `exec`가 없는 Compose라면 위의 `docker exec`를 쓴다.
 
 `ollama run`을 시작하면 프롬프트가 뜬다. `Ctrl+D` 또는 `/bye`로 나간다.
 
