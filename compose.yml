@@ -1,0 +1,32 @@
+services:
+  ollama:
+    build: .
+    image: ollama-local:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_CONTEXT_LENGTH=131072
+      - OLLAMA_FLASH_ATTENTION=1
+      - OLLAMA_KV_CACHE_TYPE=q4_0
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - HF_HUB_OFFLINE=1
+      - TRANSFORMERS_OFFLINE=1
+    volumes:
+      - open_webui_data:/app/backend/data
+    depends_on:
+      - ollama
+
+volumes:
+  ollama_data:
+  open_webui_data:
