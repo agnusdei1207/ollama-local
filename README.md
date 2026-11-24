@@ -1,6 +1,6 @@
 # 🐳 Local Ollama Quick Start Guide
 
-This guide outlines the process for using a locally hosted Ollama instance (`gemma4:e4b`) in an offline environment.
+This guide outlines the process for using a locally hosted Ollama instance (`gemma4:e2b`) in an offline environment.
 
 ## 🌐 Phase 1: Online Preparation (Internet Required)
 
@@ -10,14 +10,14 @@ This guide outlines the process for using a locally hosted Ollama instance (`gem
     ```
 2.  **Pull Model:** Pull the desired model into the running container.
     ```bash
-    docker exec ollama ollama pull gemma4:e4b
+    docker exec ollama ollama pull gemma4:e2b
     ```
 3.  **Connect Claude Code:** In your environment, configure the connection variables from `claude-config.md`.
     ```bash
     # From claude-config.md
     export ANTHROPIC_BASE_URL="http://localhost:11434"
     export ANTHROPIC_AUTH_TOKEN="ollama"
-    export ANTHROPIC_MODEL="gemma4:e4b"
+    export ANTHROPIC_MODEL="gemma4:e2b"
     export CLAUDE_CODE_AUTO_COMPACT_WINDOW=131704
     export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE=80
     ```
@@ -28,19 +28,21 @@ This guide outlines the process for using a locally hosted Ollama instance (`gem
 1.  **Restore & Run:** Use the `docker run` command from Phase 1 and the configured environment variables.
 2.  **Interact:** Run the model inside the container via CLI.
     ```bash
-    docker exec -it ollama ollama run gemma4:e4b
+    docker exec -it ollama ollama run gemma4:e2b
     ```
 
 ## 🛠️ Quick Checks
 
-*   **Check Ollama status:** `curl http://127.0.0.1:11434/api/ps`
-*   **List models:** `docker exec ollama ollama list`
+- **Check Ollama status:** `curl http://127.0.0.1:11434/api/ps`
+- **List models:** `docker exec ollama ollama list`
 
 ## 🛑 Shutdown
 
 When finished, stop and remove the container:
+
 ```bash
 docker stop ollama
 docker rm ollama
 ```
+
 **Note:** The volume (`ollama-local_ollama_data`) persists and retains your models and data.
